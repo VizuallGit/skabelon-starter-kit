@@ -1,0 +1,165 @@
+{{ _layout = gallery_mode ?? 'grid' }}
+{{ _cols   = settings.columns ?? 3 }}
+{{ _gap    = settings.gap ?? 16 }}
+{{ _per    = settings.items_visible ?? 1 }}
+{{ _count  = images | count }}
+
+<section {{ if live_preview }}style="{{ partial:color_scheme_style }}"{{ endif }}
+         id="{{ id }}"
+         class="[ {{ class }} ] wrapper bg-(--color-bg) text-(--color-text)">
+
+    <div {{ partial:spacing_props }} class="{{ partial:spacing_style }}">
+
+        {{# ─── SLIDER ─────────────────────────────────────────────────────────── #}}
+        {{ if _layout == 'slider' }}
+
+        <ul class="gallery-slider">
+            {{ images }}
+            <li>
+                <img src="{{ url }}" alt="{{ alt }}" loading="{{ index == 0 ? 'eager' : 'lazy' }}" class="w-full h-full object-cover">
+            </li>
+            {{ /images }}
+        </ul>
+
+        {{ /if }}
+
+        {{# ─── GRID ───────────────────────────────────────────────────────────── #}}
+        {{ if _layout == 'grid' }}
+
+        <div style="display: grid; grid-template-columns: repeat({{ _cols }}, 1fr); gap: {{ _gap }}px">
+            {{ images }}
+            <div style="aspect-ratio: 4/3; overflow: hidden; border-radius: 4px">
+                <img src="{{ url }}" alt="{{ alt }}" loading="lazy" class="w-full h-full object-cover">
+            </div>
+            {{ /images }}
+        </div>
+
+        {{ /if }}
+
+        {{# ─── MASONRY ────────────────────────────────────────────────────────── #}}
+        {{ if _layout == 'masonry' }}
+
+        {{ _direction = settings.direction ?? 'column' }}
+
+        {{ if _direction == 'column' }}
+        <div style="columns: {{ _cols }}; column-gap: {{ _gap }}px">
+            {{ images }}
+            <div style="break-inside: avoid; margin-bottom: {{ _gap }}px; border-radius: 4px; overflow: hidden">
+                <img src="{{ url }}" alt="{{ alt }}" loading="lazy" class="w-full block">
+            </div>
+            {{ /images }}
+        </div>
+        {{ /if }}
+
+        {{ if _direction == 'row' }}
+        <div class="gallery-masonry-row"
+             x-data="{
+               init() {
+                 if (!CSS.supports('display', 'grid-lanes')) {
+                   const rowH = 10, gap = {{ _gap }}, cols = {{ _cols }};
+                   const layout = () => {
+                     const g = this.$el;
+                     const colW = (g.offsetWidth - gap * (cols - 1)) / cols;
+                     g.querySelectorAll('[data-mi]').forEach(item => {
+                       const img = item.querySelector('img');
+                       const h = img.naturalHeight || parseInt(img.getAttribute('height')) || 300;
+                       const w = img.naturalWidth  || parseInt(img.getAttribute('width'))  || 400;
+                       item.style.gridRowEnd = 'span ' + Math.ceil(((h / w) * colW + gap) / (rowH + gap));
+                     });
+                   };
+                   this.$nextTick(layout);
+                   const ro = new ResizeObserver(layout);
+                   ro.observe(this.$el);
+                   this.$cleanup(() => ro.disconnect());
+                 }
+               }
+             }">
+            {{ images }}
+            <div data-mi style="overflow: hidden; align-self: start; border-radius: 4px">
+                <img src="{{ url }}" alt="{{ alt }}" loading="lazy" class="w-full block"
+                     width="{{ width }}" height="{{ height }}">
+            </div>
+            {{ /images }}
+        </div>
+        {{ /if }}
+
+        {{ /if }}
+
+    </div>
+</section>
+
+{{ style_push }}
+<style>
+    #{{ id }} {
+        {{ if ! live_preview }}{{ partial:color_scheme_style }}{{ /if }}
+
+        {{ if _layout == 'slider' }}
+        .gallery-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-marker-group: after;
+            scrollbar-width: none;
+            border-radius: 4px;
+
+            & > li {
+                flex: 0 0 calc(100% / {{ _per }});
+                scroll-snap-align: start;
+                aspect-ratio: 16/9;
+                overflow: hidden;
+                list-style: none;
+            }
+            &::scroll-button(*) {
+                background: color-mix(in oklch, var(--color-bg), transparent 20%);
+                color: var(--color-text);
+                width: 2.5rem;
+                height: 2.5rem;
+                border-radius: 50%;
+                border: none;
+                cursor: pointer;
+                font-size: 1.5rem;
+                line-height: 1;
+            }
+            &::scroll-button(left)  { content: "‹" / "Forrige billede"; }
+            &::scroll-button(right) { content: "›" / "Næste billede"; }
+            &::scroll-button(*):disabled { opacity: 0.3; cursor: default; }
+            &::scroll-marker-group {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+                justify-content: center;
+                padding: 0.75rem 0;
+            }
+            & > li::scroll-marker {
+                content: '';
+                width: 0.5rem;
+                height: 0.5rem;
+                border-radius: 50%;
+                background: var(--color-text);
+                opacity: 0.4;
+            }
+            & > li::scroll-marker:target-current {
+                opacity: 1;
+                width: 0.75rem;
+                height: 0.75rem;
+            }
+        }
+        {{ /if }}
+
+        {{ if _layout == 'masonry' }}
+        .gallery-masonry-row {
+            display: grid;
+            grid-template-columns: repeat({{ _cols }}, 1fr);
+            gap: {{ _gap }}px;
+            grid-auto-rows: 10px;
+        }
+        @supports (display: grid-lanes) {
+            .gallery-masonry-row {
+                display: grid-lanes;
+                grid-auto-rows: unset;
+            }
+        }
+        {{ /if }}
+    }
+</style>
+{{ /style_push }}

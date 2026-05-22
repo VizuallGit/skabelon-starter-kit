@@ -1,0 +1,22 @@
+updatable: true
+export_paths:
+  - resources/views
+  - resources/blueprints
+  - resources/fieldsets
+  - resources/css
+  - resources/js
+  - resources/users/roles.yaml
+  - content/collections
+  - content/globals
+  - content/trees
+  - content/navigation
+  - config/statamic/bard_texstyle.php
+  - config/statamic/editions.php
+  - config/statamic/live_preview.php
+  - package.json
+  - vite.config.js
+  - vite-cp.config.js
+dependencies:
+  eminos/statamic-iconify: ^2.1
+  jacksleight/statamic-bard-texstyle: ^4.1
+  ndx/statamic-bard-color-picker: ^3.0

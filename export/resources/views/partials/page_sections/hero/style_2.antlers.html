@@ -1,0 +1,23 @@
+<section {{ partial:color_scheme_style }} class="[ hero-style-2 ] bg-(--color-bg) text-(color-text)">
+    <div class="[ content ] ">
+        hrtyh
+    </div>
+    <h1>fsdfsdf</h1>
+</section>
+
+{{ style_push }}
+    <style>
+        @scope(.hero-style-1) {
+            :scope {
+            }
+
+            .btn-one {
+                background-color: var(--color-button-one);
+            }
+
+            .btn-two {
+                background-color: var(--color-button-two);
+            }
+        }
+    </style>
+{{ /style_push }}

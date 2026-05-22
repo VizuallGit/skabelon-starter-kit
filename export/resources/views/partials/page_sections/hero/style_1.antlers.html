@@ -1,0 +1,39 @@
+
+
+<section id="id-{{ id }}" class="[ {{ class }} ] relative bg-(--color-bg) text-(--color-text)" aria-label="{{ if text }}{{ if text | bard_html | contains:h1 }}{{ text | raw | bard_items | where:type:heading | first | bard_text }}{{ endif }}{{ endif }}">
+    <div {{ partial:spacing_props }} class="[ content ] wrapper  relative z-10" >
+        <div class="flow-y flow-space-1-5em prose-p:text-current/80 prose-p:max-w-[75ch]" {{ visual_edit field="text" }}>
+            {{ text }}
+        </div>
+        {{ partial:components/btn_group class="mt-500" }}
+    </div>
+    <div class="[ media ] absolute top-0 right-0 h-full w-full">
+        <video class="w-full h-full object-cover" loop autoplay muted="true" src="{{ media }}"></video>
+    </div>
+</section>
+
+
+
+{{ style_push }}
+    <style>
+        #id-{{ id }}{
+            {{ partial:color_scheme_style }}
+            {{ partial:spacing_sides_css }}
+        }
+        @scope(.{{ class }}) {
+            :scope {
+         
+            }
+            .media{
+                max-inline-size: {{ settings.media_width ? settings.media_width : '100%' }}%;
+                &::after{
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(to {{ settings.background_position }}, {{ settings.background_opacity }}color-mix(in oklch, var(--color-bg), transparent {{ opacity }}){{ last ? '' : ',' }} {{ /settings.background_opacity }});
+                }
+            }
+        }
+    </style>
+{{ /style_push }}
+

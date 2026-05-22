@@ -1,0 +1,44 @@
+{{ _image_width = switch(
+    (settings.style == 'style_one' and settings.image_width == '40' and settings.image_placement == 'right') => "xl:[&_.content]:col-start-2 xl:[&_.content]:col-end-5 xl:[&_.media]:col-start-5 xl:[&_.media]:col-end-8 xl:[&_.content]:pr-lg xl:[&_.content]:pl-gutter",
+    (settings.style == 'style_one' and settings.image_width == '40' and settings.image_placement == 'left') => "xl:[&_.content]:col-start-4 xl:[&_.content]:col-end-7 xl:[&_.media]:col-start-1 xl:[&_.media]:col-end-4 xl:[&_.content]:pl-lg xl:[&_.content]:pr-gutter",
+    (settings.style == 'style_one' and settings.image_width == '50' and settings.image_placement == 'right') => "split xl:[&_.content]:col-start-2 xl:[&_.content]:col-end-3 xl:[&_.media]:col-start-3 xl:[&_.media]:col-end-5 xl:[&_.content]:pr-lg xl:[&_.content]:pl-gutter",
+    (settings.style == 'style_one' and settings.image_width == '50' and settings.image_placement == 'left') => "split xl:[&_.content]:col-start-3 xl:[&_.content]:col-end-4 xl:[&_.media]:col-start-1 xl:[&_.media]:col-end-3 xl:[&_.content]:pl-lg xl:[&_.content]:pr-gutter",
+    (settings.style == 'style_one' and settings.image_width == '60' and settings.image_placement == 'right') => "xl:[&_.content]:col-start-2 xl:[&_.content]:col-end-4 xl:[&_.media]:col-start-4 xl:[&_.media]:col-end-8 xl:[&_.content]:pr-lg xl:[&_.content]:pl-gutter",
+    (settings.style == 'style_one' and settings.image_width == '60' and settings.image_placement == 'left') => "xl:[&_.content]:col-start-5 xl:[&_.content]:col-end-7 xl:[&_.media]:col-start-1 xl:[&_.media]:col-end-5 xl:[&_.content]:pl-lg xl:[&_.content]:pr-gutter",
+    (settings.style == 'style_one' and settings.image_width == '100') => "xl:grid-cols-1",
+
+    (settings.style == 'style_two' and settings.image_placement == 'right') => "md:[&_.content]:col-start-2 md:[&_.content]:col-end-4 md:[&_.content]:row-start-1 md:[&_.content]:row-end-2 md:[&_.content]:my-lg md:[&_.media]:col-start-3 md:[&_.media]:col-end-6 md:[&_.media]:row-start-1 md:[&_.media]:row-end-2 md:[&_.content]:px-900 md:[&_.content]:ml-gutter",
+    (settings.style == 'style_two' and settings.image_placement == 'left') => "md:[&_.content]:col-start-3 md:[&_.content]:col-end-5 md:[&_.content]:row-start-1 md:[&_.content]:row-end-2 md:[&_.content]:my-lg md:[&_.media]:col-start-1 md:[&_.media]:col-end-4 md:[&_.media]:row-start-1 md:[&_.media]:row-end-2 md:[&_.content]:px-900 md:[&_.content]:mr-gutter",
+
+    (settings.style == 'style_three') => "[&_.media]:absolute [&_.media]:inset-0 [&_.media]:h-full [&_.media]:w-full",
+
+    (settings.style == 'style_four' and settings.image_placement == 'right') => "container-wrapper md:[&_.content]:pl-lg md:[&_.content]:pr-[calc(var(--size-xl)*2)]",
+    (settings.style == 'style_four' and settings.image_placement == 'left') => "container-wrapper md:[&_.content]:pr-lg md:[&_.content]:pl-[calc(var(--size-xl)*2)]",
+)}}
+
+{{ _text_centering = switch(
+    (settings.style == 'style_three' and settings.text_centering == 'center') => "flex flex-col text-center items-center [&_.text-xl]:max-w-[65ch]",
+    (settings.style == 'style_three' and settings.image_placement == 'left') => "",
+)}}
+
+
+
+
+<section class="media-textbox relative {{ settings.style }} {{ settings.style == 'style_one' || settings.style == 'style_three' ?= settings.section_color }} {{ _image_width }} {{ settings.gap }}" aria-label="">
+    <div class="content {{ settings.image_placement }} px-gutter relative z-10 [&_p:not(.text-xl,_.text-large)]:opacity-80 {{ _text_centering }} {{ settings.small_image ?= 'self-center' }} {{ settings.pt }} {{ settings.pb }} order-2 flow-y flow-space-1-2em py-900  {{ settings.image_placement == 'left' ? 'md:order-2' : 'md:order-1' }} {{ settings.style == 'style_two' || settings.style == 'style_four' ?= settings.section_color }} ">
+        {{ text }}
+            {{ partial src="/sets/{{ type }}" }}
+        {{ /text }}
+    </div>
+    {{ if media }}
+        <div class="media {{ settings.image_centering ?= settings.image_centering }} relative overflow-clip aspect-video md:aspect-auto order-1 {{ settings.style == 'style_one' and settings.small_image and settings.image_placement == 'left' ?= 'xl:!col-start-2' }} {{ settings.style == 'style_one' and settings.small_image and settings.image_placement == 'right' ?= 'xl:!col-end-4' }} {{ settings.style == 'style_one' and settings.small_image ?= 'mx-gutter !overflow-visible xl:min-h-[28rem] relative before:absolute before:w-full before:h-full before:-top-100 before:left-100 before:border before:border-dashed before:border-primary before:rounded-3xl mt-lg {{ settings.pt | replace('p', 'm') }} {{ settings.pb | replace('p', 'm') }}' }} {{ settings.image_placement }} {{ settings.style == 'style_three' ?= settings.image_opacity }} {{ settings.image_placement == 'left' ? 'md:order-1' : 'md:order-2' }}  {{ settings.image_width == '100' ?= '!aspect-video' }}">
+            {{ if media | ends_with('.mp4') }}
+                <video loop="loop" muted loop="loop" preload="metadata" playsinline autoplay class="absolute inset-0 w-full h-full object-cover {{ settings.style == 'style_one' and settings.small_image ?= 'rounded-3xl' }} {{ settings.flip_image == true ?= 'scale-x-[-1] ' }}" >
+                    <source src="{{ media }}" type="video/mp4">
+                </video>
+            {{ else }}
+                {{ partial:components/image :imagePath="media" w="{{ settings.style == 'style_three' ? '1400' : '800' }}" h="600" class="absolute inset-0 w-full h-full object-contain  {{ settings.style == 'style_one' and settings.small_image ?= 'rounded-3xl' }} {{ settings.flip_image == true ?= 'scale-x-[-1] ' }}" }}
+            {{ endif }}
+        </div>
+    {{ endif }}
+</section>

@@ -1,0 +1,34 @@
+title: Default
+fields:
+  -
+    handle: content
+    field:
+      type: markdown
+      display: Content
+      localizable: true
+  -
+    handle: page_sections
+    field:
+      type: replicator
+      display: 'Page Sections'
+      button_label: 'Tilføj sektion'
+      sets:
+        hero_style_1:
+          display: 'Hero Style 1'
+          fields:
+            -
+              import: hero_style_1
+  -
+    handle: author
+    field:
+      type: users
+      display: Author
+      default: current
+      localizable: true
+      max_items: 1
+  -
+    handle: template
+    field:
+      type: template
+      display: Template
+      localizable: true

@@ -1,0 +1,19 @@
+{{ switch(
+    (settings.pt == '0') => '',
+    (settings.pt == '1') => 'pt-400',
+    (settings.pt == '2') => 'pt-700',
+    (settings.pt == '3') => 'pt-900',
+    (settings.pt == '4') => 'pt-lg',
+    (settings.pt == '5') => 'pt-xl',
+    (settings.pt == '6') => 'pt-xxl',
+    () => ''
+) }} {{ switch(
+    (settings.pb == '0') => '',
+    (settings.pb == '1') => 'pb-400',
+    (settings.pb == '2') => 'pb-700',
+    (settings.pb == '3') => 'pb-900',
+    (settings.pb == '4') => 'pb-lg',
+    (settings.pb == '5') => 'pb-xl',
+    (settings.pb == '6') => 'pb-xxl',
+    () => ''
+) }}

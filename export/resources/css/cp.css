@@ -1,0 +1,33 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer addon-utilities {
+    @import "tailwindcss/utilities";
+
+    .size-2 { width: 0.5rem; height: 0.5rem; }
+    .dot-size {
+        width: 10cqmin;
+        aspect-ratio: 1/1;
+    }
+    .border-custom {
+        border: 1px solid color-mix(in oklch, rgb(145, 145, 145), transparent 50%);
+    }
+    .ndx-text-color-trigger { color: white !important; }
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   Fælles: input / select
+   ═══════════════════════════════════════════════════════ */
+.cp-input {
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #374151;
+    outline: none;
+}
+.dark .cp-input {
+    border-color: oklch(1 0 0 / 15%);
+    background: var(--color-content-bg);
+    color: var(--theme-color-gray-100);
+}
+
+/* fluid-ft-* og fluid-sz-* er flyttet til vizuall/fluid-size addon */

@@ -1,0 +1,164 @@
+{{ _layout = layout ?? 'grid' }}
+{{ _cols   = settings.columns ?? 3 }}
+{{ _gap    = settings.gap ?? 16 }}
+{{ _per    = settings.items_visible ?? 1 }}
+{{ _speed  = settings.speed ?? 5000 }}
+{{ _count  = images | count }}
+
+<section {{ if live_preview }}style="{{ partial:color_scheme_style }}"{{ endif }}
+         id="{{ id }}"
+         class="[ {{ class }} ] wrapper bg-(--color-bg) text-(--color-text)">
+
+    <div {{ partial:spacing_props }} class="{{ partial:spacing_style }}">
+
+        {{# ─── SLIDER ─────────────────────────────────────────────────────────── #}}
+        {{ if _layout == 'slider' }}
+
+        <div x-data="{
+               cur: 0,
+               count: {{ _count }},
+               per: {{ _per }},
+               get pages() { return Math.ceil(this.count / this.per) },
+               go(n) { this.cur = ((n % this.pages) + this.pages) % this.pages },
+               next() { this.go(this.cur + 1) },
+               prev() { this.go(this.cur - 1) },
+               paused: false,
+               init() {
+                 {{ if settings.autoslide }}
+                 setInterval(() => { if (!this.paused) this.next() }, {{ _speed }});
+                 {{ /if }}
+               }
+             }">
+
+            <div class="relative overflow-hidden rounded">
+                <div class="flex transition-transform duration-500 ease-in-out"
+                     :style="`transform: translateX(calc(-${cur} * ${per} / ${count} * 100%)); width: calc(${count} / ${per} * 100%)`">
+                    {{ images }}
+                    <div style="flex: 0 0 calc(100% / {{ _count }}); aspect-ratio: 16/9; overflow: hidden">
+                        <img src="{{ url }}" alt="{{ alt }}" loading="{{ index == 0 ? 'eager' : 'lazy' }}" class="w-full h-full object-cover">
+                    </div>
+                    {{ /images }}
+                </div>
+
+                <button @click="prev()"
+                        class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-(--color-bg)/80 text-(--color-text) flex items-center justify-center hover:bg-(--color-bg) transition-colors"
+                        aria-label="Forrige">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <button @click="next()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-(--color-bg)/80 text-(--color-text) flex items-center justify-center hover:bg-(--color-bg) transition-colors"
+                        aria-label="Næste">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
+
+            <div class="flex items-center justify-center gap-2 mt-4">
+                <template x-for="i in Array.from({length: pages}, (_, i) => i)" :key="i">
+                    <button @click="go(i)"
+                            :class="cur === i ? 'w-3 h-3 opacity-100' : 'w-2 h-2 opacity-40'"
+                            class="rounded-full bg-(--color-text) transition-all"
+                            :aria-label="`Side ${i + 1}`">
+                    </button>
+                </template>
+                {{ if settings.autoslide }}
+                <button @click="paused = !paused"
+                        class="ml-2 w-7 h-7 rounded-full border border-(--color-text)/20 flex items-center justify-center hover:bg-(--color-text)/10 transition-colors"
+                        :aria-label="paused ? 'Afspil' : 'Pause'">
+                    <template x-if="!paused">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </template>
+                    <template x-if="paused">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </template>
+                </button>
+                {{ /if }}
+            </div>
+
+        </div>
+
+        {{ /if }}
+
+        {{# ─── GRID ───────────────────────────────────────────────────────────── #}}
+        {{ if _layout == 'grid' }}
+
+        <div style="display: grid; grid-template-columns: repeat({{ _cols }}, 1fr); gap: {{ _gap }}px">
+            {{ images }}
+            <div style="aspect-ratio: 4/3; overflow: hidden; border-radius: 4px">
+                <img src="{{ url }}" alt="{{ alt }}" loading="lazy" class="w-full h-full object-cover">
+            </div>
+            {{ /images }}
+        </div>
+
+        {{ /if }}
+
+        {{# ─── MASONRY ────────────────────────────────────────────────────────── #}}
+        {{ if _layout == 'masonry' }}
+
+        {{ _direction = settings.direction ?? 'column' }}
+
+        {{ if _direction == 'column' }}
+        <div style="columns: {{ _cols }}; column-gap: {{ _gap }}px">
+            {{ images }}
+            <div style="break-inside: avoid; margin-bottom: {{ _gap }}px; border-radius: 4px; overflow: hidden">
+                <img src="{{ url }}" alt="{{ alt }}" loading="lazy" class="w-full block">
+            </div>
+            {{ /images }}
+        </div>
+        {{ /if }}
+
+        {{ if _direction == 'row' }}
+        <div class="gallery-masonry-row"
+             x-data="{
+               init() {
+                 if (!CSS.supports('display', 'grid-lanes')) {
+                   const rowH = 10, gap = {{ _gap }}, cols = {{ _cols }};
+                   const layout = () => {
+                     const g = this.$el;
+                     const colW = (g.offsetWidth - gap * (cols - 1)) / cols;
+                     g.querySelectorAll('[data-mi]').forEach(item => {
+                       const img = item.querySelector('img');
+                       const h = img.naturalHeight || parseInt(img.getAttribute('height')) || 300;
+                       const w = img.naturalWidth  || parseInt(img.getAttribute('width'))  || 400;
+                       item.style.gridRowEnd = 'span ' + Math.ceil(((h / w) * colW + gap) / (rowH + gap));
+                     });
+                   };
+                   this.$nextTick(layout);
+                   const ro = new ResizeObserver(layout);
+                   ro.observe(this.$el);
+                   this.$cleanup(() => ro.disconnect());
+                 }
+               }
+             }">
+            {{ images }}
+            <div data-mi style="overflow: hidden; align-self: start; border-radius: 4px">
+                <img src="{{ url }}" alt="{{ alt }}" loading="lazy" class="w-full block"
+                     width="{{ width }}" height="{{ height }}">
+            </div>
+            {{ /images }}
+        </div>
+        {{ /if }}
+
+        {{ /if }}
+
+    </div>
+</section>
+
+{{ style_push }}
+<style>
+    #{{ id }} {
+        {{ if ! live_preview }}{{ partial:color_scheme_style }}{{ /if }}
+    }
+    #{{ id }} .gallery-masonry-row {
+        display: grid;
+        grid-template-columns: repeat({{ _cols }}, 1fr);
+        gap: {{ _gap }}px;
+        grid-auto-rows: 10px;
+    }
+    @supports (display: grid-lanes) {
+        #{{ id }} .gallery-masonry-row {
+            display: grid-lanes;
+            grid-auto-rows: unset;
+        }
+    }
+</style>
+{{ /style_push }}

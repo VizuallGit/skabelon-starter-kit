@@ -1,0 +1,9 @@
+{{ if admin_settings:code }}
+    {{ render_antlers :code="admin_settings:code" }}
+{{ /if }}
+
+{{ style_push }}
+    <style>
+        {{ admin_settings:custom_css }}
+    </style>
+{{ /style_push }}

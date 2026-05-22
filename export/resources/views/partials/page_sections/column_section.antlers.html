@@ -1,0 +1,81 @@
+{{ if columns }}
+
+{{ style_push }}
+<style>
+    #id-{{ id }} {
+        {{ partial:color_scheme_style }}
+        {{ partial:spacing_sides_css }}
+    }
+    #id-{{ id }} .col-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: {{ settings.gap ?? '1rem' }};
+    }
+    {{ columns }}
+    #id-{{ id }} .col-item-{{ index }} {
+        grid-column: span {{ col_w_m ?? 12 }};
+        {{ if col_color }}
+        --color-bg: {{ col_color:background_color }};
+        --color-text: {{ col_color:text_color }};
+        --color-inner-bg: {{ col_color:inner_background_color }};
+        --color-inner-text: {{ col_color:inner_text_color }};
+        background-color: var(--color-bg);
+        color: var(--color-text);
+        {{ /if }}
+    }
+    @media (min-width: 768px) {
+        #id-{{ id }} .col-item-{{ index }} {
+            grid-column: span {{ col_w_t ?? 6 }};
+        }
+    }
+    @media (min-width: 1024px) {
+        #id-{{ id }} .col-item-{{ index }} {
+            grid-column: span {{ col_w_d ?? 4 }};
+        }
+    }
+    {{ /columns }}
+</style>
+{{ /style_push }}
+
+<section id="id-{{ id }}" class="{{ class }} bg-(--color-bg) text-(--color-text)">
+    <div {{ partial:spacing_props }} class="wrapper">
+        <div class="col-grid">
+            {{ columns }}
+            <div class="col-item-{{ index }}">
+
+                {{ if type == 'billede' }}
+                    {{ if image }}
+                    <div {{ visual_edit field="image" }} style="overflow:hidden;">
+                        {{ glide :src="image" width="1200" format="webp" quality="80" :fit="fit ?? 'crop'" }}
+                            <img src="{{ url }}" alt="{{ image:alt ?? '' }}" style="width:100%;height:auto;display:block;">
+                        {{ /glide }}
+                    </div>
+                    {{ /if }}
+
+                {{ elseif type == 'tekst' }}
+                    {{ if content }}
+                    <div class="prose" {{ visual_edit field="content" }}>{{ content }}</div>
+                    {{ /if }}
+
+                {{ elseif type == 'links' }}
+                    {{ if links }}
+                    <nav {{ visual_edit field="links" }}>
+                        <ul style="list-style:none;padding:0;margin:0;">
+                            {{ links }}
+                            <li>
+                                <a href="{{ link_type == 'url' ? url : entry_url }}" {{ if open_in_new_window }}target="_blank" rel="noopener"{{ /if }}>{{ text }}</a>
+                            </li>
+                            {{ /links }}
+                        </ul>
+                    </nav>
+                    {{ /if }}
+
+                {{ /if }}
+
+            </div>
+            {{ /columns }}
+        </div>
+    </div>
+</section>
+
+{{ /if }}

@@ -1,0 +1,21 @@
+<div class="[ site-topbar ] wrapper py-2 text-xs">
+    <div class="">
+ fsdfds dsfds
+    </div>
+   
+</div>
+
+{{ style_push }}
+<style>
+    @scope(.site-topbar){
+        :scope{
+            --color-button-one: {{ theme_settings.topbar.settings.color_scheme:button_one_color }};
+            --color-button-one-text: {{ theme_settings.topbar.settings.color_scheme:button_one_text_color }};
+           background-color: {{ theme_settings.topbar.settings.color_scheme.background_color }};
+           color: {{ theme_settings.header.settings.color_scheme.text_color }};
+           padding-block-start: var(--size-{{ theme_settings.topbar.settings.pt }}00);
+           padding-block-end: var(--size-{{ theme_settings.topbar.settings.pb }}00);
+        }
+    }
+</style>
+{{ /style_push }}

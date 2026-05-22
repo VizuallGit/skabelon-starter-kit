@@ -1,0 +1,38 @@
+{{ partial:components/section class="[ {{ class }} ] " }}
+    <ul class="[ list ] grid">
+        {{ entries }}
+            <li class="[ item ] relative bg-(--color-bg) text-(--color-text)" id="id-{{ id }}">
+                <div class="[ content ] relative z-10 flow-y prose-p:text-current/75 " >
+                    {{ text }}
+                    {{ partial:components/btn_group }}
+                </div>
+                {{ partial:components/image :imagePath="background_image" class="[ image ] absolute inset-0 w-full h-full object-cover" }}
+            </li>
+        {{ /entries }}
+    </ul>
+{{ /partial:components/section }}
+
+{{ style_push }}
+    <style>
+             #id-{{ id }}{
+                {{ partial:color_scheme_style }}
+            }
+            {{ entries }}
+                #id-{{ id }}{
+                    {{ partial:color_scheme_style }}
+                    {{ partial:spacing_sides_css }}
+
+                    img{
+                        opacity: {{ settings.opacity }};
+                    }
+                }
+                {{ if settings.css }}{{ scope_css :css="settings.css" :id="id" }}{{ /if }}
+            {{ /entries }}
+
+        @scope(.{{ class }}){
+            .list {
+                grid-template-columns: repeat({{ entries | count }}, 1fr);
+            }
+        }
+    </style>
+{{ /style_push }}

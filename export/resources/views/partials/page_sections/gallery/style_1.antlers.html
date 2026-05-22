@@ -1,0 +1,205 @@
+{{ _slider_image_width = theme_settings.container_width | remove_right('em') | multiply(16) | divide(settings.slider_items) }}
+
+
+{{ _slider_image_height = switch(
+    (settings.aspect_ratio == 'aspect-4/3') => (_slider_image_width | multiply(3) | divide(4) | ceil),
+    (settings.aspect_ratio == 'aspect-16/9') => (_slider_image_width | multiply(9) | divide(16) | ceil),
+    (settings.aspect_ratio == 'aspect-3/4') => (_slider_image_width | multiply(4) | divide(3) | ceil),
+    () => _slider_image_width
+) }}
+
+<section id="id-{{ id }}" class="[ {{ class }} ] wrapper">
+    <div class="{{ settings.gallery_mode }}" id="gallery-grid-{{ id }}">
+        {{ images }}
+            {{ if settings.gallery_mode == 'masonry' }}
+                {{ glide :src="url" width="{{ settings.image_size | to_int | multiply(30) }}" }}
+                    <img loading="lazy" src="{{ url }}" width="{{ width }}" height="{{ height }}"
+                        data-index="{{ index }}" alt="{{ alt }}" class="gallery-thumb w-full">
+                {{ /glide }}
+            {{ else }}
+                {{ glide :src="url" :width="_slider_image_width | round" :height="_slider_image_height | round" fit="crop_focal" }}
+                    <img loading="lazy" src="{{ url }}" width="{{ width }}" height="{{ height }}"
+                        data-index="{{ index }}" alt="{{ alt }}" class="gallery-thumb w-full">
+                {{ /glide }}
+            {{ endif }}
+        {{ /images }}
+    </div>
+</section>
+
+
+
+<script>
+(function () {
+    var galleryEl = document.getElementById('gallery-grid-{{ id }}');
+    var images    = [{{ images }}{{ unless first }},{{ /unless }}'{{ url }}'{{ /images }}];
+    var current   = 0;
+
+    var lb = document.createElement('div');
+    lb.style.cssText = 'display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.88);align-items:center;justify-content:center;';
+
+    var lbImg     = document.createElement('img');
+    var lbClose   = mkBtn('✕', 'position:absolute;top:1rem;right:1rem;font-size:1.4rem;');
+    var lbPrev    = mkBtn('‹', 'position:absolute;left:1rem;font-size:2rem;');
+    var lbNext    = mkBtn('›', 'position:absolute;right:1rem;font-size:2rem;');
+    var lbCounter = document.createElement('div');
+
+    lbImg.style.cssText     = 'max-height:90vh;max-width:90vw;object-fit:contain;';
+    lbCounter.style.cssText = 'position:absolute;bottom:1rem;color:#fff;font-size:.875rem;';
+
+    lb.append(lbClose, lbPrev, lbImg, lbNext, lbCounter);
+    document.body.appendChild(lb);
+
+    function mkBtn(label, extra) {
+        var b = document.createElement('button');
+        b.textContent = label;
+        b.style.cssText = 'background:rgba(255,255,255,.15);border:none;border-radius:50%;width:2.75rem;height:2.75rem;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;' + extra;
+        return b;
+    }
+
+    function show(i) {
+        current    = (i + images.length) % images.length;
+        lbImg.src  = images[current];
+        lbCounter.textContent = (current + 1) + ' / ' + images.length;
+        lb.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+        lb.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    galleryEl.addEventListener('click', function (e) {
+        var thumb = e.target.closest('[data-index]');
+        if (thumb) show(parseInt(thumb.dataset.index, 10));
+    });
+
+    lbClose.addEventListener('click', close);
+    lbPrev.addEventListener('click', function () { show(current - 1); });
+    lbNext.addEventListener('click', function () { show(current + 1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+
+    document.addEventListener('keydown', function (e) {
+        if (lb.style.display === 'none') return;
+        if (e.key === 'Escape')     close();
+        if (e.key === 'ArrowLeft')  show(current - 1);
+        if (e.key === 'ArrowRight') show(current + 1);
+    });
+}());
+</script>
+
+
+{{ style_push }}
+<style>
+    #id-{{ id }} {
+        {{ partial:color_scheme_style }}
+        {{ partial:spacing_sides_css }}
+    }
+    @scope(.{{ class }}){
+        :scope{
+          background-color: var(--color-bg);
+          color: var(--color-text);
+        }
+
+        .gallery-thumb {
+            cursor: pointer;
+            display: block;
+            transition: opacity .2s;
+        }
+        .gallery-thumb:hover { opacity: .85; }
+
+        .slider{
+            --button-size: var(--size-800);
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: calc(100% / {{ settings.slider_items }});
+            gap: {{ settings.gap }};
+            scroll-behavior: smooth;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-marker-group: after;
+            anchor-name: --carousel;
+
+            &::-webkit-scrollbar { display: none; }
+
+            &::scroll-marker-group {
+                display: flex;
+                gap: 4px;
+                margin-block-start: var(--gutter);
+            }
+
+            & > li::scroll-marker {
+                content: '';
+                display: block;
+                width: var(--size-850);
+                height: 5px;
+                border-radius: 2px;
+                background-color: var(--color-light-glare);
+            }
+
+            & > li::scroll-marker:target-current {
+                background-color: var(--color-primary);
+            }
+
+            &::scroll-button(*) {
+                width: var(--button-size);
+                aspect-ratio: 1/1;
+                border: 0;
+                font-family: var(--font-symbols);
+                font-size: calc(var(--button-size) / 3);
+                cursor: pointer;
+                border-radius: var(--radius-xs);
+                z-index: 99;
+                position: absolute;
+                position-anchor: --carousel;
+                background-color: var(--color-light-glare);
+                color: var(--color-dark-shade);
+                transition: all 0.3s ease-in-out;
+            }
+
+            &::scroll-button(*):hover {
+                background-color: var(--color-primary);
+                color: var(--color-light-glare);
+            }
+
+            &::scroll-button(*):disabled { opacity: .5; }
+
+            &::scroll-button(left) {
+                content: '\e900' / 'Scroll left';
+                top: calc(anchor(top) - var(--size-950));
+                left: calc(100% - (anchor(left) + (var(--button-size) * 2) + 4px));
+            }
+
+            &::scroll-button(right) {
+                content: '\e901' / 'Scroll right';
+                top: calc(anchor(top) - var(--size-950));
+                right: calc(100% - anchor(left));
+            }
+
+            .featured_players__item { scroll-snap-align: start; }
+        }
+
+        .masonry {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax({{ settings.image_size }}rem, 1fr));
+            gap: 1rem;
+            align-items: start;
+
+            img { block-size: 100%; object-fit: cover; }
+        }
+
+        @supports (grid-template-rows: masonry) {
+            .masonry {
+                grid-template-rows: masonry;
+                img { block-size: auto; }
+            }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax({{ settings.image_size }}rem, 1fr));
+            gap: 1rem;
+        }
+    }
+</style>
+{{ /style_push }}

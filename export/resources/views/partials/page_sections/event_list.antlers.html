@@ -1,0 +1,14 @@
+<section class="wrapper py-1000 space-y-gutter">
+    {{ partial:components/section_heading }}
+    <ul class="auto-grid auto-grid-lg gap-gutter">
+        {{ collection from="events" }}
+            <li class="relative">
+                <div>
+                    <img src="das" alt="">
+                    {{ partial:components/image :imagePath="featured_media" }}
+                </div>
+                <h3><a href="{{ url }}">{{ title }}</a></h3>
+            </li>
+        {{ /collection }}
+    </ul>
+</section>

@@ -1,0 +1,60 @@
+{{ _class = 'bg-(--color-inner-bg) text-(--color-inner-text) p-gutter flow-y prose-headings:text-[clamp(1.6rem,7cqi,2.4rem)] prose-p:opacity-80' }}
+
+{{ _cols = switch(
+    (entries | count == 2) => 'md:grid-cols-2',
+    (entries | count >= 3) => 'md:grid-cols-3',
+    () => ''
+) }}
+
+{{ _h = switch(
+    (settings.aspect_ratio == 'aspect-1/1') => '400',
+    (settings.aspect_ratio == 'aspect-4/3') => (400 * 3 / 4),
+    (settings.aspect_ratio == 'aspect-16/9') => (400 * 9 / 16),
+    (settings.aspect_ratio == 'aspect-3/4') => (400 * 4 / 3),
+) }}
+
+{{ _offset = switch(
+    (settings.offset == 'sm') => '-mt-400 ',
+    (settings.offset == 'md') => '-mt-700 ',
+    (settings.offset == 'lg') => '-mt-900 ',
+    () => ''
+) }}
+
+<section id="id-{{ id }}" class="[ {{ class }} ] wrapper bg-(--color-bg) text-(--color-text)" aria-labelledby="{{ headline | slugify }}">
+    <div {{ partial:spacing_props }} class="space-y-gutter {{ partial:spacing_style }}">
+        {{ partial:components/section_heading }}
+        <ul class="[ list ] grid grid-cols-1 gap-gutter relative z-10 {{ _offset + ' ' + _cols }}">
+            {{ entries }}
+                <li class="[ list-item ] @container {{ image == false ?= _class }}" >
+                    {{ if settings.show_image and image }}
+                        <div class="image-overlay">
+                            {{ partial:components/image :imagePath="image" w="400" h="{{ _h }}" class="w-full h-full object-cover"  }}
+                        </div>
+                    {{ endif }}
+                    {{ if image }}
+                        <div class="{{ _class }}">
+                    {{ endif }}
+                        {{ text }}
+                        {{ partial:components/btn_group class="flow-space-500" }}
+                    {{ if image }}
+                        </div>
+                    {{ endif }}
+                </li>
+            {{ /entries }}
+        </ul>
+    </div>
+</section>
+{{ style_push }}
+    <style>
+        #id-{{ id }}{
+            {{ partial:color_scheme_style }}
+            {{ partial:spacing_sides_css }}
+        }
+        {{ if settings.css }}{{ scope_css :css="settings.css" :id="id" }}{{ /if }}
+        @scope(.{{ class }}){
+            :scope {
+              
+            }
+        }
+    </style>
+{{ /style_push }}

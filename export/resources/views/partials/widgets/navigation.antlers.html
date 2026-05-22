@@ -1,0 +1,38 @@
+
+<nav class="hidden lg:block ml-auto" aria-label="Primær navigation">
+    <menu class="flex items-center gap-[1.5em]">
+        {{ if nav_options == 'default' }}
+            {{ nav:collection:pages include_home="{{ include_homepage ? 'true' : 'false' }}" }}
+                {{ unless hide_in_main_nav }}
+                    {{ if highlighted_in_main_nav }}
+                        {{ partial:components/btn :text="title" :url="url" class="bg-primary-glare text-light-glare" }}
+                    {{ else }}
+                        <li class="relative group">
+                            <a class="font-semibold {{ is_current || is_parent ?= 'underline underline-offset-6' }}" href="{{ url }}">{{ title }}</a>
+                            {{ if children }}
+                                <ul class="absolute min-w-max divide-y divide-dark-shade/10 top-700 opacity-0 bg-light py-400 px-600 pointer-events-none group-hover:opacity-100 translate-y-200 group-hover:translate-y-0 rounded-md group-hover:pointer-events-auto transition-all duration-300 ease-in-out before:w-full before:h-700 before:bg-transparent before:absolute before:-top-700 before:left-0 after:absolute after:-top-1.5 after:size-100 after:bg-light after:rotate-45">
+                                    {{ children }}
+                                    <li class="text-sm not-first:pt-3 not-last:pb-3">
+                                        <a class="flex flex-col {{ is_current ?= '' }}" href="{{ url }}">
+                                            <span class="font-semibold">{{ title }}</span>
+                                            {{ if headline }}
+                                                <span class="opacity-60 text-xxs max-w-[30ch] leading-tight line-clamp-1">{{ headline }}</span>
+                                            {{ endif }}
+                                        </a>
+                                    </li>
+                                    {{ /children }}
+                                </ul>
+                            {{ endif }}
+                        </li>
+                    {{ endif }}
+                {{ /unless }}
+            {{ /nav:collection:pages }}
+        {{ else }}
+            {{ nav handle="footer_nav" }}
+                    <li>
+                        <a href="{{ url }}">{{ title }}</a>
+                    </li>
+            {{ /nav }}
+        {{ endif }}
+    </menu>
+</nav>

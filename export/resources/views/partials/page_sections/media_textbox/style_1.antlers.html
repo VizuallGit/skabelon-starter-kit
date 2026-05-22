@@ -1,0 +1,43 @@
+{{ _media_class = 'absolute inset-0 w-full h-full object-cover' }}
+
+{{ _cols = switch(
+    (settings.media_width == '25' and settings.flip_content == false) => 'md:grid-cols-[1fr_3fr]',
+    (settings.media_width == '25' and settings.flip_content == true) => 'md:grid-cols-[3fr_1fr]',
+    (settings.media_width == '33' and settings.flip_content == false) => 'md:grid-cols-[1fr_2fr]',
+    (settings.media_width == '33' and settings.flip_content == true) => 'md:grid-cols-[2fr_1fr]',
+    (settings.media_width == '50' and settings.flip_content == false) => 'md:grid-cols-[1fr_1fr]',
+    (settings.media_width == '50' and settings.flip_content == true) => 'md:grid-cols-[1fr_1fr]',
+    (settings.media_width == '66' and settings.flip_content == false) => 'md:grid-cols-[2fr_1fr]',
+    (settings.media_width == '66' and settings.flip_content == true) => 'md:grid-cols-[1fr_2fr]',
+    (settings.media_width == '75' and settings.flip_content == false) => 'md:grid-cols-[3fr_1fr]',
+    (settings.media_width == '75' and settings.flip_content == true) => 'md:grid-cols-[1fr_3fr]',
+    () => ''
+) }}
+
+<section id="id-{{ id }}" class="[ {{ class }} ] wrapper relative bg-(--color-bg) text-(--color-text) grid gap-x-1000 gap-y-gutter items-center {{ _cols }} {{ partial:spacing_style }}" aria-label="{{ if text }}{{ if text | bard_html | contains:h2 }}{{ text | raw | bard_items | where:type:heading | first | bard_text }}{{ endif }}{{ endif }}">
+    <div class="[ content ] flow-y flow-space-400 prose-p:opacity-75 order-2 py-900 {{ settings.flip_content ? 'md:order-1' : '' }}">
+        {{ text }}
+        {{ partial:components/btn_group class="flow-space-500" }}
+    </div>
+    <div class="[ media-wrapper ] image-overlay relative h-full order-1 aspect-video md:aspect-auto {{ settings.flip_content ? 'md:order-2' : '' }}">
+        {{ if media | contains('.mp4') }}
+            <video class="{{ _media_class }}" loop autoplay muted="true" src="{{ media }}"></video>
+        {{ else }}
+            {{ partial:components/image :imagePath="media" class="{{ _media_class }}" }}
+        {{ endif }}
+    </div>
+</section>
+
+{{ style_push }}
+<style>
+    #id-{{ id }}{
+        {{ partial:color_scheme_style }}
+        {{ partial:spacing_sides_css }}
+    }
+    @scope(.{{ class }}){
+        :scope{
+           
+        }
+    }
+</style>
+{{ /style_push }}

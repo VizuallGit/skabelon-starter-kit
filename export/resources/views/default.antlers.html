@@ -1,0 +1,5 @@
+{{ page_sections }}
+    {{ if live_preview }}<div data-section-index="{{ index }}" data-section-type="{{ type }}">{{ endif }}
+        {{ partial src="partials/page_sections/{ type }" id="{{ id }}" class="{{ type | replace('/', '-') | replace('_', '-') }}" }}
+    {{ if live_preview }}</div>{{ endif }}
+{{ /page_sections }}

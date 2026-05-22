@@ -1,0 +1,17 @@
+title: Events
+icon: collections
+template: events/show
+layout: layout
+mount: 7581ac59-26cc-48b6-80a5-058b4a94b64f
+revisions: false
+route: '/{mount}/{slug}/'
+date: true
+sort_dir: asc
+date_behavior:
+  past: public
+  future: private
+preview_targets:
+  -
+    label: Entry
+    url: '{permalink}'
+    refresh: true

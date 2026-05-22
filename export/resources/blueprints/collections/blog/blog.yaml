@@ -1,0 +1,40 @@
+title: Blog
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: main_content
+            field: common.main_content
+          -
+            handle: headline
+            field:
+              type: text
+              display: Headline
+  sidebar:
+    display: Sidebar
+    sections:
+      -
+        fields:
+          -
+            handle: title
+            field:
+              type: text
+              required: true
+              validate:
+                - required
+          -
+            handle: slug
+            field:
+              type: slug
+              localizable: true
+              validate: 'max:200'
+          -
+            handle: featured_media
+            field:
+              container: assets
+              max_files: 1
+              type: assets
+              display: 'Featured media'
