@@ -21,8 +21,18 @@ topbar:
       enabled: true
   settings:
     color_scheme: theme-4
-    pt: .5rem
-    pb: .5rem
+    pt:
+      -
+        sides:
+          - top
+        value: 0
+        custom: false
+    pb:
+      -
+        sides:
+          - top
+        value: 0
+        custom: false
 header:
   widgets:
     -
@@ -53,8 +63,18 @@ header:
       enabled: true
   settings:
     color_scheme: theme-1
-    pt: 2
-    pb: 2
+    pt:
+      -
+        sides:
+          - top
+        value: 0
+        custom: false
+    pb:
+      -
+        sides:
+          - top
+        value: 0
+        custom: false
 footer:
   footer_widgets:
     -
@@ -77,8 +97,18 @@ footer:
       form_picker: contact_form
   settings:
     color_scheme: theme-2
-    pt: 5
-    pb: 5
+    pt:
+      -
+        sides:
+          - top
+        value: 0
+        custom: false
+    pb:
+      -
+        sides:
+          - top
+        value: 0
+        custom: false
 primary_color: '#011A65'
 secondary_color: '#4bd2bc'
 tertiary_color: '#E54533'
@@ -306,13 +336,13 @@ button_preview:
 media_color_overlay: '#E54533'
 opacity: 20%
 show_blog: true
-show_employees: true
-show_services: true
-show_cases: true
-show_events: true
-show_products: true
-show_testimonials: true
-show_reusable_sections: true
+show_employees: false
+show_services: false
+show_cases: false
+show_events: false
+show_products: false
+show_testimonials: false
+show_reusable_sections: false
 custom_css: |-
   .entries-style-1 .list-item,.media-textbox-style-1 .media-wrapper{
       border-top-left-radius: 1.5rem;

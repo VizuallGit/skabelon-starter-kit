@@ -1,5 +1,10 @@
 updatable: true
 export_paths:
+  - app/Providers/AppServiceProvider.php
+  - app/Modifiers
+  - app/Tags
+  - app/Fieldtypes/ButtonPreview.php
+  - app/Fieldtypes/ThemeColorPicker.php
   - resources/views
   - resources/blueprints
   - resources/fieldsets
