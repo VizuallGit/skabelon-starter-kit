@@ -6,6 +6,7 @@ export_paths:
   - resources/css
   - resources/js
   - resources/users/roles.yaml
+  - content/assets
   - content/collections
   - content/globals
   - content/trees
