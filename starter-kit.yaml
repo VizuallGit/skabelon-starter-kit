@@ -19,6 +19,7 @@ export_paths:
   - content/globals/site_settings.yaml
   - content/globals/theme_settings.yaml
   - content/globals/default/theme_settings.yaml
+  - content/navigation
   - public/fonts
   - config/statamic/bard_texstyle.php
   - config/statamic/editions.php
