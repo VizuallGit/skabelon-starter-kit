@@ -112,6 +112,7 @@ footer:
 primary_color: '#011A65'
 secondary_color: '#4bd2bc'
 tertiary_color: '#E54533'
+quaternary_color: '#00c728'
 contrast_light: '#fafafa'
 contrast_dark: '#011656'
 neutral_color: gray
