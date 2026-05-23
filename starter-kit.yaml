@@ -1,10 +1,12 @@
 updatable: true
 export_paths:
+  - app/Http/Middleware/InjectStyles.php
   - app/Providers/AppServiceProvider.php
   - app/Modifiers
   - app/Tags
   - app/Fieldtypes/ButtonPreview.php
   - app/Fieldtypes/ThemeColorPicker.php
+  - bootstrap/app.php
   - resources/views
   - resources/blueprints
   - resources/fieldsets
