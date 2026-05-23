@@ -158,7 +158,13 @@ tabs:
             field:
               type: color
               display: 'Tertiary color'
-              width: 50
+              width: 25
+          -
+            handle: quaternary_color
+            field:
+              type: color
+              display: 'Quaternary color'
+              width: 25
           -
             handle: contrast_light
             field:
@@ -189,6 +195,9 @@ tabs:
                 -
                   key: from_tertiary
                   value: 'Gray + 10% tertiary farve'
+                -
+                  key: from_quaternary
+                  value: 'Gray + 10% quaternary farve'
               default: gray
               type: select
               display: 'Neutral color'
