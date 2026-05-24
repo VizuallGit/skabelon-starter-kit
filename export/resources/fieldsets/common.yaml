@@ -11,21 +11,24 @@ fields:
     field:
       options:
         -
-          key: font-light
+          key: 300
           value: Light
         -
-          key: font-regular
+          key: 400
           value: Regular
         -
-          key: font-medium
+          key: 500
           value: Medium
         -
-          key: font-semibold
+          key: 600
           value: Semibold
         -
-          key: font-bold
+          key: 700
           value: Bold
-      default: font-regular
+        -
+          key: 800
+          value: 'Extra bold'
+      default: '400'
       type: select
       display: 'Font weight'
   -
@@ -75,34 +78,8 @@ fields:
   -
     handle: font_family
     field:
-      options:
-        -
-          key: Arial
-          value: Arial
-        -
-          key: Poppins
-          value: Poppins
-        -
-          key: Roboto
-          value: Roboto
-        -
-          key: Montserrat
-          value: Montserrat
-        -
-          key: SourceSerifPro
-          value: 'Source Serif Pro'
-        -
-          key: Inter
-          value: Inter
-        -
-          key: Oswald
-          value: Oswald
-        -
-          key: Merriweather
-          value: Merriweather
-      type: select
+      type: font_family_selector
       display: 'Font family'
-      default: Arial
   -
     handle: opacity
     field:

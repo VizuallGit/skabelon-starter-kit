@@ -3,8 +3,14 @@
 namespace App\Providers;
 
 use App\Fieldtypes\ButtonPreview;
+use App\Fieldtypes\FluidFontPreview;
+use App\Fieldtypes\FluidFontSize;
+use App\Fieldtypes\FluidSize;
+use App\Fieldtypes\FontFamilySelector;
+use App\Fieldtypes\FontUploader;
 use App\Fieldtypes\ThemeColorPicker;
 use App\Modifiers\ContrastColor;
+use App\Modifiers\FontFamily;
 use App\Modifiers\ToInt;
 use App\Tags\RenderAntlers;
 use App\Tags\ScopeCss;
@@ -85,6 +91,7 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Modifier::register('contrast_color', ContrastColor::class);
+        Modifier::register('font_family', FontFamily::class);
         Modifier::register('to_int', ToInt::class);
         RenderAntlers::register();
         ScopeCss::register();
@@ -93,9 +100,21 @@ class AppServiceProvider extends ServiceProvider
         ScriptPush::register();
         YieldScripts::register();
         ButtonPreview::register();
+        FluidFontPreview::register();
+        FluidFontSize::register();
+        FluidSize::register();
+        FontFamilySelector::register();
+        FontUploader::register();
         ThemeColorPicker::register();
 
+
         Statamic::booted(function () {
+            $fontDir   = public_path('fonts');
+            $fontFiles = is_dir($fontDir)
+                ? array_map('basename', glob($fontDir . '/*.{woff2,woff,ttf,otf}', GLOB_BRACE) ?: [])
+                : [];
+            Statamic::provideToScript(['custom-fonts' => array_values($fontFiles)]);
+
             $swatches = ThemeColorPicker::buildSwatches();
             Statamic::provideToScript(['bard-color-picker' => [
                 'swatches'  => $swatches,

@@ -53,14 +53,15 @@
 
             /* --- Font scale --- */
             {{ if theme_settings.font_scale_preview }}
-            --font-size-h1: var(--{{ theme_settings.font_scale_preview:h1 }});
-            --font-size-h2: var(--{{ theme_settings.font_scale_preview:h2 }});
-            --font-size-h3: var(--{{ theme_settings.font_scale_preview:h3 }});
-            --font-size-h4: var(--{{ theme_settings.font_scale_preview:h4 }});
-            --font-size-h5: var(--{{ theme_settings.font_scale_preview:h5 }});
-            --font-size-h6: var(--{{ theme_settings.font_scale_preview:h6 }});
-            --font-size-p:  var(--{{ theme_settings.font_scale_preview:p }});
+                --font-size-h1: var(--{{ theme_settings.font_scale_preview:h1 }});
+                --font-size-h2: var(--{{ theme_settings.font_scale_preview:h2 }});
+                --font-size-h3: var(--{{ theme_settings.font_scale_preview:h3 }});
+                --font-size-h4: var(--{{ theme_settings.font_scale_preview:h4 }});
+                --font-size-h5: var(--{{ theme_settings.font_scale_preview:h5 }});
+                --font-size-h6: var(--{{ theme_settings.font_scale_preview:h6 }});
+                --font-size-p:  var(--{{ theme_settings.font_scale_preview:p }});
             {{ /if }}
+
 
 
             /* --- Sizes --- */
@@ -133,18 +134,51 @@
             {{ /if }}
         }
 
+        body{
+            line-height: {{ theme_settings.line_height }};
+        }
+
+        h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5,h6,.h6{
+            line-height: var(--leading-flat);
+            font-weight: {{ theme_settings.font_family.headline_font_weight }};
+        }
+
+        {{ _base_is_custom = false }}
+        {{ _heading_is_custom = false }}
+        {{ theme_settings.custom_fonts }}
+            {{ if file | font_family | lower == theme_settings.font_family.base | lower }}{{ _base_is_custom = true }}{{ /if }}
+            {{ if file | font_family | lower == theme_settings.font_family.headings | lower }}{{ _heading_is_custom = true }}{{ /if }}
+        {{ /theme_settings.custom_fonts }}
+
+        {{ if !_base_is_custom }}
         @font-face {
             font-family: "{{ theme_settings.font_family.base }}";
             src: url("/fonts/{{ theme_settings.font_family.base | lower }}.woff2") format("woff2-variations");
-            font-weight: 300 900;
+            font-weight: 100 900;
             font-display: swap;
         }
+        {{ /if }}
 
+        {{ if !_heading_is_custom }}
         @font-face {
             font-family: "{{ theme_settings.font_family.headings }}";
             src: url("/fonts/{{ theme_settings.font_family.headings | lower }}.woff2") format("woff2-variations");
-            font-weight: 300 900;
+            font-weight: 100 900;
             font-display: swap;
         }
+        {{ /if }}
+
+        {{ if theme_settings.custom_fonts }}
+            {{ theme_settings.custom_fonts }}
+                {{ _family = file | font_family }}
+                {{ if _family | lower == theme_settings.font_family.base | lower }}{{ _display_family = theme_settings.font_family.base }}{{ elseif _family | lower == theme_settings.font_family.headings | lower }}{{ _display_family = theme_settings.font_family.headings }}{{ else }}{{ _display_family = _family }}{{ /if }}
+                @font-face {
+                    font-family: "{{ _display_family }}";
+                    src: url("/fonts/{{ file | rawurlencode }}") format("{{ if variable }}woff2-variations{{ else }}woff2{{ /if }}");
+                    font-weight: {{ if variable }}100 900{{ else }}{{ weight ?? '400' }}{{ /if }};
+                    font-display: swap;
+                }
+            {{ /theme_settings.custom_fonts }}
+        {{ endif }}
     </style>
 {{ /style_push }}

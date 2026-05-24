@@ -45,7 +45,7 @@
 
                 {{ if type == 'billede' }}
                     {{ if image }}
-                    <div {{ visual_edit field="image" }} style="overflow:hidden;">
+                    <div style="overflow:hidden;">
                         {{ glide :src="image" width="1200" format="webp" quality="80" :fit="fit ?? 'crop'" }}
                             <img src="{{ url }}" alt="{{ image:alt ?? '' }}" style="width:100%;height:auto;display:block;">
                         {{ /glide }}
@@ -54,12 +54,12 @@
 
                 {{ elseif type == 'tekst' }}
                     {{ if content }}
-                    <div class="prose" {{ visual_edit field="content" }}>{{ content }}</div>
+                    <div class="prose">{{ content }}</div>
                     {{ /if }}
 
                 {{ elseif type == 'links' }}
                     {{ if links }}
-                    <nav {{ visual_edit field="links" }}>
+                    <nav>
                         <ul style="list-style:none;padding:0;margin:0;">
                             {{ links }}
                             <li>

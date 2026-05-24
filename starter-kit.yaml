@@ -3,8 +3,14 @@ export_paths:
   - app/Http/Middleware/InjectStyles.php
   - app/Providers/AppServiceProvider.php
   - app/Modifiers
+  - app/Support
   - app/Tags
   - app/Fieldtypes/ButtonPreview.php
+  - app/Fieldtypes/FluidFontPreview.php
+  - app/Fieldtypes/FluidFontSize.php
+  - app/Fieldtypes/FluidSize.php
+  - app/Fieldtypes/FontFamilySelector.php
+  - app/Fieldtypes/FontUploader.php
   - app/Fieldtypes/ThemeColorPicker.php
   - bootstrap/app.php
   - resources/views
@@ -25,9 +31,11 @@ export_paths:
   - content/collections/testimonials.yaml
   - content/globals/site_settings.yaml
   - content/globals/theme_settings.yaml
+  - content/globals/default/site_settings.yaml
   - content/globals/default/theme_settings.yaml
   - content/navigation
   - public/fonts
+  - config/statamic/bard-color-picker.php
   - config/statamic/bard_texstyle.php
   - config/statamic/editions.php
   - config/statamic/live_preview.php

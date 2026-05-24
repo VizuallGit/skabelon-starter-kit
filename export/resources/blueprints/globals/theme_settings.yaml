@@ -314,6 +314,63 @@ tabs:
       -
         fields:
           -
+            handle: custom_fonts
+            field:
+              type: grid
+              display: 'Custom fonte'
+              instructions: 'Upload custom fonte til public/fonts/. Familienavnet udledes automatisk af filnavnet.'
+              add_row: 'Tilføj font'
+              fields:
+                -
+                  handle: file
+                  field:
+                    type: font_uploader
+                    display: 'Font fil'
+                -
+                  handle: weight
+                  field:
+                    type: select
+                    display: Vægt
+                    width: 20
+                    if:
+                      variable: 'equals false'
+                    options:
+                      -
+                        key: '100'
+                        value: '100 Thin'
+                      -
+                        key: '200'
+                        value: '200 ExtraLight'
+                      -
+                        key: '300'
+                        value: '300 Light'
+                      -
+                        key: '400'
+                        value: '400 Regular'
+                      -
+                        key: '500'
+                        value: '500 Medium'
+                      -
+                        key: '600'
+                        value: '600 SemiBold'
+                      -
+                        key: '700'
+                        value: '700 Bold'
+                      -
+                        key: '800'
+                        value: '800 ExtraBold'
+                      -
+                        key: '900'
+                        value: '900 Black'
+                    default: '400'
+                -
+                  handle: variable
+                  field:
+                    type: toggle
+                    display: 'Variable font'
+                    instructions: 'Slå fra hvis fonten har separate filer pr. vægtning'
+                    width: 20
+          -
             handle: font_family
             field:
               type: group
@@ -324,55 +381,32 @@ tabs:
                   field: common.font_family
                   config:
                     display: Base
-                    width: 66
+                    width: 75
                 -
                   handle: base_font_weight
                   field: common.font_weight
                   config:
-                    width: 33
+                    width: 25
                 -
                   handle: headings
                   field: common.font_family
                   config:
                     display: Headings
-                    width: 33
+                    width: 50
                 -
                   handle: headings_uppercase
                   field:
                     type: toggle
                     display: Uppercase
-                    width: 33
+                    width: 25
                 -
                   handle: headline_font_weight
                   field: common.font_weight
                   config:
-                    width: 33
+                    width: 25
           -
             handle: line_height
-            field:
-              options:
-                -
-                  key: leading-none
-                  value: 1%
-                -
-                  key: leading-flat
-                  value: 1.15%
-                -
-                  key: leading-tight
-                  value: 1.3%
-                -
-                  key: leading-relax
-                  value: 1.4%
-                -
-                  key: leading-normal
-                  value: 1.5%
-                -
-                  key: leading-loos
-                  value: 1.7%
-              type: select
-              display: 'Line height'
-              instructions: 'Hvor meget afstand der er mellem linjer i teksten. 1% = fontens højde.'
-              default: leading-normal
+            field: common.line_height
           -
             handle: font_scale_preview
             field:

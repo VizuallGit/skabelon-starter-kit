@@ -6,7 +6,6 @@ class StarterKitPostInstall
         'statamic-addon/code-editor'    => 'git@github.com:VizuallGit/statamic-addon-code-editor.git',
         'statamic-addon/color-scheme'   => 'git@github.com:VizuallGit/statamic-addon-color-scheme.git',
         'statamic-addon/column-builder' => 'git@github.com:VizuallGit/statamic-addon-column-builder.git',
-        'statamic-addon/fluid-size'     => 'git@github.com:VizuallGit/statamic-addon-fluid-size.git',
         'statamic-addon/modifiers'      => 'git@github.com:VizuallGit/statamic-addon-modifiers.git',
         'statamic-addon/sections'       => 'git@github.com:VizuallGit/statamic-addon-sections.git',
         'statamic-addon/spacing'        => 'git@github.com:VizuallGit/statamic-addon-spacing.git',

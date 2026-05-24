@@ -311,12 +311,28 @@ fluid_sizes:
     -
       handle: size-1200
       value: 'clamp(5.625rem, 4.375rem + 6.25vw, 9.375rem)'
+custom_fonts:
+  -
+    id: 3WBAz_tVNW3sJHOq7haNg
+    file: BarlowCondensed-Bold-3.woff2
+    weight: '700'
+    variable: false
+  -
+    id: n822ArsqY1KBDKQa9fLQm
+    file: BarlowCondensed-Medium-1.woff2
+    weight: '500'
+    variable: false
+  -
+    id: bWsabp8XvITZJMNuKv3eo
+    file: BarlowCondensed-Regular.woff2
+    weight: '400'
+    variable: false
 font_family:
   base: Inter
   base_font_weight: font-regular
-  headings: Oswald
-  headings_uppercase: false
-  headline_font_weight: font-bold
+  headings: BarlowCondensed
+  headings_uppercase: true
+  headline_font_weight: 700
 line_height: leading-normal
 font_scale_preview:
   h1: size-700
