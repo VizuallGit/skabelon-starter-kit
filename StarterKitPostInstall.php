@@ -43,6 +43,11 @@ class StarterKitPostInstall
         passthru("composer require $packages --no-interaction");
 
         $console->line('');
-        $console->info('Vizuall starter kit er klar! Kør: npm install && npm run build');
+        $console->line('Bygger CP-assets (npm install && npm run cp:build)...');
+        passthru('npm install --no-audit --no-fund');
+        passthru('npm run cp:build');
+
+        $console->line('');
+        $console->info('Vizuall starter kit er klar! Kør evt. npm run build for frontend-assets.');
     }
 }
