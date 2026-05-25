@@ -25,6 +25,7 @@ export_paths:
   - content/collections/employees.yaml
   - content/collections/events.yaml
   - content/collections/pages.yaml
+  - content/collections/pages/home.md
   - content/collections/products.yaml
   - content/collections/reusable_sections.yaml
   - content/collections/services.yaml

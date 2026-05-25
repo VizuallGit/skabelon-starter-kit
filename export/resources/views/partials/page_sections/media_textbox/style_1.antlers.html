@@ -1,16 +1,11 @@
 {{ _media_class = 'absolute inset-0 w-full h-full object-cover' }}
 
 {{ _cols = switch(
-    (settings.media_width == '25' and settings.flip_content == false) => 'md:grid-cols-[1fr_3fr]',
-    (settings.media_width == '25' and settings.flip_content == true) => 'md:grid-cols-[3fr_1fr]',
-    (settings.media_width == '33' and settings.flip_content == false) => 'md:grid-cols-[1fr_2fr]',
-    (settings.media_width == '33' and settings.flip_content == true) => 'md:grid-cols-[2fr_1fr]',
-    (settings.media_width == '50' and settings.flip_content == false) => 'md:grid-cols-[1fr_1fr]',
-    (settings.media_width == '50' and settings.flip_content == true) => 'md:grid-cols-[1fr_1fr]',
-    (settings.media_width == '66' and settings.flip_content == false) => 'md:grid-cols-[2fr_1fr]',
-    (settings.media_width == '66' and settings.flip_content == true) => 'md:grid-cols-[1fr_2fr]',
-    (settings.media_width == '75' and settings.flip_content == false) => 'md:grid-cols-[3fr_1fr]',
-    (settings.media_width == '75' and settings.flip_content == true) => 'md:grid-cols-[1fr_3fr]',
+    (settings.media_width == '40' and settings.flip_content == false) => 'md:grid-cols-[2fr_3fr]',
+    (settings.media_width == '40' and settings.flip_content == true) => 'md:grid-cols-[3fr_2fr]',
+    (settings.media_width == '50') => 'md:grid-cols-[1fr_1fr]',
+    (settings.media_width == '60' and settings.flip_content == false) => 'md:grid-cols-[3fr_2fr]',
+    (settings.media_width == '60' and settings.flip_content == true) => 'md:grid-cols-[2fr_3fr]',
     () => ''
 ) }}
 
