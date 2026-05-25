@@ -1,6 +1,32 @@
 title: Common
 fields:
   -
+    handle: settings
+    field:
+      type: tabby
+      display: Settings
+      fields:
+        -
+          handle: tab_colors
+          field:
+            type: tab
+            display: Farver
+        -
+          handle: color_scheme
+          field:
+            type: color_scheme_selector
+            display: Farveskema
+        -
+          handle: tab_spacing
+          field:
+            type: tab
+            display: Spacing
+        -
+          handle: padding
+          field: common.section_spacing
+          config:
+            display: Padding
+  -
     handle: spacing
     field:
       max: 6
