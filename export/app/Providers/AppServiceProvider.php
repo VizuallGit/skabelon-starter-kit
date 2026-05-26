@@ -49,7 +49,8 @@ class AppServiceProvider extends ServiceProvider
 
                     try {
                         $global = \Statamic\Facades\GlobalSet::find('theme_settings');
-                        $data   = $global?->in('default')?->data();
+                        $site   = \Statamic\Facades\Site::selected()->handle();
+                        $data   = $global?->in($site)?->data();
                         if (! $data) return $collections;
 
                         $map = [

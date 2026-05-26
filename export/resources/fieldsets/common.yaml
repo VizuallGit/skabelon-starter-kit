@@ -26,6 +26,17 @@ fields:
           field: common.section_spacing
           config:
             display: Padding
+        -
+          handle: custom_css
+          field:
+            type: tab
+            display: 'Custom css'
+        -
+          handle: css
+          field:
+            type: css_editor
+            display: Css
+            instructions: 'Skriv :root for at taget section id/class'
   -
     handle: spacing
     field:
