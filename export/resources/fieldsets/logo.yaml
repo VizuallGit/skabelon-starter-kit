@@ -10,7 +10,6 @@ fields:
   -
     handle: height
     field:
-      min: 1
       step: 10
       type: range
       display: Height

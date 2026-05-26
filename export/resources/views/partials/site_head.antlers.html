@@ -7,6 +7,7 @@
             {{ partial src="widgets/{type}" }}
         {{ /theme_settings.header.widgets }}
     </div>
+    
 </header>
 
 
@@ -18,8 +19,7 @@
             --color-button-one-text: {{ theme_settings.header.settings.color_scheme:button_one_text_color }};
            background-color: {{ theme_settings.header.settings.color_scheme.background_color }};
            color: {{ theme_settings.header.settings.color_scheme.text_color }};
-           padding-block-start: var(--size-{{ theme_settings.header.settings.pt }}00);
-           padding-block-end: var(--size-{{ theme_settings.header.settings.pb }}00);
+           {{ partial:spacing_sides_css :padding="theme_settings.header.settings.padding" }}
         }
     }
 </style>

@@ -1,4 +1,6 @@
-{{ settings.padding }}
+{{ _p = padding ?? settings.padding }}
+
+{{ _p }}
     {{ if custom }}
         {{ if top    }}padding-top:    {{ value }};{{ /if }}
         {{ if right  }}padding-right:  {{ value }};{{ /if }}
@@ -10,7 +12,4 @@
         {{ if bottom }}padding-bottom: var(--size-{{ value }}00);{{ /if }}
         {{ if left   }}padding-left:   var(--size-{{ value }}00);{{ /if }}
     {{ /if }}
-{{ /settings.padding }}
-
-
-
+{{ /_p }}

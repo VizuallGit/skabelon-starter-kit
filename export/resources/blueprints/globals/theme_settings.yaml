@@ -82,18 +82,11 @@ tabs:
                           type: color_scheme_selector
                           display: 'Color Scheme'
                       -
-                        handle: pt
-                        field: common.spacing
-                        config:
-                          display: 'Padding top'
-                          width: 50
-                      -
-                        handle: pb
-                        field: common.spacing
-                        config:
-                          display: 'Padding bottom'
-                          width: 50
-                          side: bottom
+                        handle: padding
+                        field:
+                          max: 9
+                          type: spacing
+                          display: Padding
       -
         display: Footer
         fields:
