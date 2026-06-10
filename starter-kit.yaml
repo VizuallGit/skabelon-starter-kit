@@ -18,6 +18,7 @@ export_paths:
   - resources/fieldsets
   - resources/css
   - resources/js
+  - resources/svg
   - resources/users/roles.yaml
   - content/assets
   - content/collections/blog.yaml
